@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Receipt extends Model
+{
+    /** @use HasFactory<\Database\Factories\ReceiptFactory> */
+    use HasFactory;
+
+    protected $fillable = [
+        'company_name',
+        'product_name',
+        'amount_paid',
+        'customer_name'
+    ];
+}
