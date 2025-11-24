@@ -13,7 +13,7 @@ class ReceiptController extends Controller
      */
     public function index()
     {
-        return Receipt::all();
+        return response()->json(Receipt::all());
     }
 
     /**
@@ -22,15 +22,15 @@ class ReceiptController extends Controller
     public function store(Request $request)
     {
         $fields = $request->validate([
-            'company_name' => 'required',
-            'product_name' => 'required',
-            'amount_paid' => 'required',
-            'customer_name' => 'required'
+            'company_name' => 'required|string',
+            'product_name' => 'required|string',
+            'amount_paid' => 'required|numeric',
+            'customer_name' => 'required|string'
         ]);
 
         $receipt = Receipt::create($fields);
 
-        return ['receipt' => $receipt];
+        return response()->json($receipt);
     }
 
     /**
@@ -38,7 +38,7 @@ class ReceiptController extends Controller
      */
     public function show(Receipt $receipt)
     {
-        return ['receipt' => $receipt];
+        return response()->json($receipt);
     }
 
     /**
@@ -46,7 +46,16 @@ class ReceiptController extends Controller
      */
     public function update(Request $request, Receipt $receipt)
     {
-        //
+        $fields = $request->validate([
+            'company_name' => 'string',
+            'product_name' => 'string',
+            'amount_paid' => 'numeric',
+            'customer_name' => 'string'
+        ]);
+
+        $receipt->update($fields);
+
+        return response()->json($receipt);
     }
 
     /**
@@ -54,6 +63,8 @@ class ReceiptController extends Controller
      */
     public function destroy(Receipt $receipt)
     {
-        //
+        $receipt->delete();
+
+        return response()->json(['message' => 'Receipt deleted successfully']);
     }
 }
