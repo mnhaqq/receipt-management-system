@@ -16,4 +16,9 @@ class Receipt extends Model
         'amount_paid',
         'customer_name'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

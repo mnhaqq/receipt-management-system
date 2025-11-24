@@ -2,12 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateReceiptRequest;
 use App\Models\Receipt;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Gate;
 
-class ReceiptController extends Controller
+class ReceiptController extends Controller implements HasMiddleware
 {
+    public static function middleware()
+    {
+        return [
+            new Middleware('auth:sanctum', except: ['index', 'show'])
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -28,7 +37,7 @@ class ReceiptController extends Controller
             'customer_name' => 'required|string'
         ]);
 
-        $receipt = Receipt::create($fields);
+        $receipt = $request->user()->receipts()->create($fields);
 
         return response()->json($receipt);
     }
@@ -46,6 +55,8 @@ class ReceiptController extends Controller
      */
     public function update(Request $request, Receipt $receipt)
     {
+        Gate::authorize('modify', $receipt);
+
         $fields = $request->validate([
             'company_name' => 'string',
             'product_name' => 'string',
@@ -63,6 +74,8 @@ class ReceiptController extends Controller
      */
     public function destroy(Receipt $receipt)
     {
+        Gate::authorize('modify', $receipt);
+        
         $receipt->delete();
 
         return response()->json(['message' => 'Receipt deleted successfully']);
