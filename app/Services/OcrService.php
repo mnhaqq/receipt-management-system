@@ -15,9 +15,9 @@ class OcrService
 
         return [
             'raw_text' => $text,
-            'vendor' => $this->extractVendor($text),
+            'vendor_name' => $this->extractVendor($text),
             'total_amount' => $this->extractTotal($text),
-            'date' => $this->extractDate($text),
+            'purchase_date' => $this->extractDate($text),
             'category' => $this->guessCategory($text),
         ];
     }
