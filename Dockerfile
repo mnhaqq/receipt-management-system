@@ -1,5 +1,10 @@
 FROM richarvey/nginx-php-fpm:latest
 
+RUN apk add --no-cache \
+    tesseract-ocr \
+    tesseract-ocr-dev \
+    tesseract-ocr-data-eng
+
 COPY . .
 
 ENV SKIP_COMPOSER=0
